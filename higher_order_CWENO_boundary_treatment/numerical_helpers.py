@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 21 21:50:35 2018
-
-Script containing various numerical helper methods.
-
-@author: Sven
-"""
 
 import numpy as np
 from scipy.special.orthogonal import p_roots

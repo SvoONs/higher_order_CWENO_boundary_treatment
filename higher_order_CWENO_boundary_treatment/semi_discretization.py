@@ -1,16 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 21 18:27:36 2018
-
-Script providing methods for right hand side of semi discretized systems of 
-ODEs in FV scheme using LLxF.
-
-@author: Sven
-"""
 
 import numpy as np
-from uniform_CWENO_1D import CWENO3_1D, CWENO5_1D, CWENO7_1D
-from uniform_CWENO_2D import CWENO3_2D, CWENO5_2D, CWENO7_2D
+from higher_order_CWENO_boundary_treatment.uniform_CWENO_1D import CWENO3_1D, CWENO5_1D, CWENO7_1D
+from higher_order_CWENO_boundary_treatment.uniform_CWENO_2D import CWENO3_2D, CWENO5_2D, CWENO7_2D
 
 def right_hand_side(data, h, flux, dflux, params, order):
     """ Method implementing the RHS of the semi discretized system of ODEs

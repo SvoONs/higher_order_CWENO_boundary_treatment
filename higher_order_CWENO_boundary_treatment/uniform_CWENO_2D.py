@@ -1,15 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jul 21 19:32:40 2018
-
-Script containing the CWENO classes for uniform grids in 2D by the dimension-by-dimension
-extension of the 1D classes.
-
-@author: Sven
-"""
 
 import numpy as np 
-from uniform_CWENO_1D import Uniform_CWENO_1D, CWENO3_1D, CWENO5_1D, CWENO7_1D
+from higher_order_CWENO_boundary_treatment.uniform_CWENO_1D import Uniform_CWENO_1D, CWENO3_1D, CWENO5_1D, CWENO7_1D
 
 
 class Uniform_CWENO_2D:

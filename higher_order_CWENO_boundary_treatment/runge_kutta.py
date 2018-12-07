@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sun Feb 25 19:39:52 2018
-
-Script providing classes of Runge-Kutta time integrators of order 3,5,6 and 7.
-
-@author: Sven
-"""
 
 import numpy as np
 import scipy as sp
-from numerical_helpers import jacobian
+from higher_order_CWENO_boundary_treatment.numerical_helpers import jacobian
 
 
 class Runge_Kutta:
@@ -163,113 +156,6 @@ class Explicit_Dormand_Prince(Runge_Kutta):
         return solution, times
         
 
-class Implicit_Runge_Kutta(Runge_Kutta):
-    """ Subclass implementing the routines for implicit Runge Kutta methods. """
-
-    def __init__(self, u0, T, tau, function, A=None, b=None):
-        """ The constructor. """
-        super().__init__(u0, T, tau, function, A, b)
-        self.tol = 1e-04
-            
-    def step(self, u):
-        """ Method performing time stepping. """
-        return u + self.tau*self.phi(u)
-        
-    def phi(self, u):
-        """ Calculates the summation of b_j*u_j in one step of the Runge Kutta method. """
-        M = 20 # max number of newton iterations
-        stage_der = np.array(self.s*[self.f(u)]) # initial value: u’_0
-        J = jacobian(self.f, u)
-        stage_val = self.phi_solve(u, stage_der, J, M)
-        return np.array([np.dot(self.b, 
-                                stage_val.reshape(self.s,self.N)[:,j]) for j in range(self.N)])
-                                
-    def phi_solve(self, u, init_val, J, M):
-        """ This function solves the sm x sm system
-        F(u_i)=0
-        by Newton’s method with an initial guess init_val. """
-        JJ = np.eye(self.s*self.N)-self.tau*np.kron(self.A, J)
-        lu_factor = sp.linalg.lu_factor(JJ)
-        for i in range(M):
-            init_val, norm_d = self.phi_newtonstep(u, init_val, lu_factor)
-            if norm_d < self.tol:
-                # print('Newton converged in {} steps'.format(i))
-                break
-            elif i == M-1:
-                raise ValueError('The Newton iteration did not converge.')
-        return init_val
-        
-    def phi_newtonstep(self, u, init_val, lu_factor):
-        """ Takes one Newton step by solvning
-        G’(u_i)(u^(n+1)_i-u^(n)_i)=-G(u_i)
-        where
-        G(u_i) = u_i - y_n - h*sum(a_{ij}*u’_j) for j=1,...,s. """
-        d = sp.linalg.lu_solve(lu_factor, - self.F(init_val.flatten(), u))
-        return init_val.flatten() + d, np.linalg.norm(d)
-        
-    def F(self, stage_der, u):
-        """ Returns the subtraction u’_{i}-f(t_{n}+c_{i}*h, u_{i}),
-        where u are the stage values, u’ the stage derivatives and f the
-        function of the IVP y’=f(t,y) that should be solved by the RK-method. """
-        stage_der_new = np.empty((self.s,self.N)) # the i:th stage_der is on the i:th row
-        for i in range(self.s): #iterate over all stage_der
-            stage_val = u + np.array([self.tau*np.dot(self.A[i,:], stage_der.reshape(self.s,self.N)[:, j]) 
-                                                      for j in range(self.N)])
-            stage_der_new[i, :] = self.f(stage_val)
-        return stage_der - stage_der_new.reshape(-1)
-        
-
-class Gauss_Legendre(Implicit_Runge_Kutta):
-    """ Gauss Legendre quadrature used for time integration of order 6. """
-
-    def __init__(self, u0, T, tau, function, TOL=1e-04):
-        """ The constructor. """
-        super().__init__(u0, T, tau, function)
-        self.A = np.array([[5/36, 2/9 - np.sqrt(15)/15, 5/36 - np.sqrt(15)/30],
-                          [5/36 + np.sqrt(15)/24, 2/9, 5/36 - np.sqrt(15)/24],
-                          [5/36 + np.sqrt(15)/30, 2/9 + np.sqrt(15)/15, 5/36]])
-        self.b = [5/18,4/9,5/18]
-        self.c = [1/2-np.sqrt(15)/10,1/2,1/2+np.sqrt(15)/10]
-        self.s = len(self.b)
-        self.tol = TOL
-    
-
-class Explicit_RK3_2D_Systems:
-    """ Base class for one step SSP Runge Kutta time integrator method of
-    order 3 for systems. """
-    
-    A = np.array([[0,0,0], [1,0,0], [1/4,1/4,0]])
-    b = np.array([1/6, 1/6, 2/3])
-    
-    def __init__(self, u0, T, tau, function):
-        """ The constructor. """
-        self.u0 = u0
-        self.T = T
-        self.tau = tau
-        self.f = function
-        self.d = u0.shape[0]
-        self.Nx = u0.shape[1]
-        self.Ny = u0.shape[2]
-        self.s = int(0 if self.b is None else len(self.b))
-        
-    def step(self,u):
-        """ Method executing time stepping. """
-        k = np.zeros([self.d,self.Nx,self.Ny,len(self.b)])
-        for i in range(len(self.b)):
-            k[:,:,:,i] = self.f(u + self.tau*np.dot(k,self.A[i,:]))    
-                
-        return u + self.tau*np.dot(k,self.b)      
-        
-    def solve(self):
-        """ Method solving problem up to desired time horizon. """
-        solution = np.zeros([self.d,self.Nx,self.Ny,int(self.T/self.tau)+1])
-        solution[:,:,:,0] = self.u0
-        for t in range(1,int(self.T/self.tau)+1):
-            solution[:,:,:,t] = self.step(solution[:,:,:,t-1])
-
-        return solution
-        
-
 class Explicit_RK3_1D_SWE:
     """ Base class for one step SSP Runge Kutta time integrator method of
     order 3 for systems. The class is modified in order to integrate the 
@@ -347,9 +233,6 @@ class Explicit_RK3_2D_SWE:
             lam_y = np.amax(np.abs(solution[i-1][2,:,:]/solution[i-1][0,:,:]) 
                             + np.sqrt(solution[i-1][0,:,:]))
             tau = self.c_safety*self.h/max(lam_x,lam_y)
-#            tau = self.c_safety*self.h/(max(np.amax(np.abs(solution[i-1][1,:,:]/solution[i-1][0,:,:])), 
-#                                            np.amax(np.abs(solution[i-1][2,:,:]/solution[i-1][0,:,:]))) 
-#                                        + np.sqrt(np.amax(solution[i-1][0,:,:])))
             tau = min(tau,self.T-self.t)
             k = np.zeros([self.d,self.Nx,self.Ny,len(self.b)])
             for j in range(len(self.b)):

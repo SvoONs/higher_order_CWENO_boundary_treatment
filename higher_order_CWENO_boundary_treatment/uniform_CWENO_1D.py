@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jul 11 00:21:40 2018
-
-Script containing the base CWENO class for uniform grids in 1D as well as classes
-implementing the CWENO3, CWENO5 and CWENO7 reconstructions, including boundary treatments.
-
-@author: Sven
-"""
 
 import numpy as np
 from scipy.special import factorial
