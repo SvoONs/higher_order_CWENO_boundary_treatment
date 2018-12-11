@@ -2,7 +2,9 @@
 
 import numpy as np
 from scipy.special import factorial
-from numerical_helpers import undivided_differences
+
+from higher_order_CWENO_boundary_treatment.numerical_helpers import undivided_differences
+
 
 class Uniform_CWENO_1D:
     """ Base class for CWENO reconstructions on uniform grids. """
