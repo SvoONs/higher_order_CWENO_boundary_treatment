@@ -2,7 +2,7 @@
 
 import numpy as np
 
-import higher_order_CWENO_boundary_treatment.runge_kutta as rk
+import higher_order_CWENO_boundary_treatment.utils.runge_kutta as rk
 
 
 def test_rk_method_consistency():
