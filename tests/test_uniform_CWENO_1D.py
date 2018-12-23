@@ -1,59 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import pytest
-
-from higher_order_CWENO_boundary_treatment.uniform_CWENO_1D import (
-    CWENO3_1D,
-    CWENO5_1D,
-    CWENO7_1D,
-)
-
-
-@pytest.fixture
-def data_params():
-    return {
-        "CWENO3": np.array([0, 1, 0]),
-        "CWENO5": np.array([1, 0, 1, 0, 1]),
-        "CWENO7": np.array([0, 1, 0, 1, 0, 1, 0]),
-        "h": 0.1,
-        "eps": 0.01,
-        "p": 2,
-        "d0": 0.5,
-    }
-
-
-@pytest.fixture
-def cweno3(data_params):
-    return CWENO3_1D(
-        data_params["CWENO3"],
-        data_params["h"],
-        data_params["eps"],
-        data_params["p"],
-        data_params["d0"],
-    )
-
-
-@pytest.fixture
-def cweno5(data_params):
-    return CWENO5_1D(
-        data_params["CWENO5"],
-        data_params["h"],
-        data_params["eps"],
-        data_params["p"],
-        data_params["d0"],
-    )
-
-
-@pytest.fixture
-def cweno7(data_params):
-    return CWENO7_1D(
-        data_params["CWENO7"],
-        data_params["h"],
-        data_params["eps"],
-        data_params["p"],
-        data_params["d0"],
-    )
 
 
 def test_operator_initialization(cweno3, cweno5, cweno7):
