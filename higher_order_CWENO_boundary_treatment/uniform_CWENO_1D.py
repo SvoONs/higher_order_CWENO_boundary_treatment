@@ -56,8 +56,8 @@ class Uniform_CWENO_1D:
         self.preprocess_differences(avgs, params)
 
     def compute_reconstruction_polynomial(self):
-        """ Main routine to compute the coefficients of 
-        reconstruction polynomials. """
+        """Main routine to compute the coefficients of
+        reconstruction polynomials."""
 
         # compute interpolants
         polynomials = self.compute_interpolants()
@@ -201,11 +201,11 @@ class Uniform_CWENO_1D:
 
     @staticmethod
     def jiang_shu_indicator(g, coeffs, h):
-        """ 
+        """
         Computes the Jiang-Shu regularity indicator for a given (multidimensional)
-        array of polynomial coefficients, sorted from low to high degree monomials. 
-        Assumption for the use of this formula is, that the polynomial is centered 
-        around 0. 
+        array of polynomial coefficients, sorted from low to high degree monomials.
+        Assumption for the use of this formula is, that the polynomial is centered
+        around 0.
         """
 
         n = coeffs.shape[0]
@@ -229,8 +229,8 @@ class Uniform_CWENO_1D:
 
 
 class CWENO3_1D(Uniform_CWENO_1D):
-    """ Subclass implementing CWENO3 reconstruction for one dimensional underlying function 
-    including one-sided boundary treatment. """
+    """Subclass implementing CWENO3 reconstruction for one dimensional underlying function
+    including one-sided boundary treatment."""
 
     def __init__(self, avgs, h, eps, p, d0, params=None):
         """ The constructor. """
@@ -241,8 +241,8 @@ class CWENO3_1D(Uniform_CWENO_1D):
         self.avgs = avgs
 
     def compute_reconstruction_polynomial(self):
-        """ Main routine computing the coefficients of 
-        reconstruction polynomials. """
+        """Main routine computing the coefficients of
+        reconstruction polynomials."""
 
         d = np.array([self.d0, (1 - self.d0) / 2, (1 - self.d0) / 2])
         optimal = self.polynomials[0].copy()
@@ -267,8 +267,8 @@ class CWENO3_1D(Uniform_CWENO_1D):
         return rec_coeffs
 
     def compute_indicators(self):
-        """ Method to compute the smoothness indicators of the candidate polynomials. 
-        Supposedly faster than the general formula of the super class. """
+        """Method to compute the smoothness indicators of the candidate polynomials.
+        Supposedly faster than the general formula of the super class."""
 
         indicators = np.zeros([self.diffs.shape[0] - self.G, 3])
         indicators[:, 0] = np.power(self.polynomials[0][:, 1], 2) + 13 / 3 * np.power(
@@ -279,8 +279,8 @@ class CWENO3_1D(Uniform_CWENO_1D):
         return indicators
 
     def boundary(self, side, p_opt):
-        """ Method implementing the 3rd order boundary treatment as 
-        proposed in Naumann (2017). """
+        """Method implementing the 3rd order boundary treatment as
+        proposed in Naumann (2017)."""
 
         c = self.params
         if side == "left":
@@ -306,8 +306,8 @@ class CWENO3_1D(Uniform_CWENO_1D):
 
 
 class CWENO5_1D(Uniform_CWENO_1D):
-    """ Subclass implementing CWENO5 reconstruction for one dimensional underlying function 
-    including one-sided boundary treatment. """
+    """Subclass implementing CWENO5 reconstruction for one dimensional underlying function
+    including one-sided boundary treatment."""
 
     def __init__(self, avgs, h, eps, p, d0, params=None):
         """ The constructor. """
@@ -345,8 +345,8 @@ class CWENO5_1D(Uniform_CWENO_1D):
         return rec_coeffs
 
     def compute_indicators(self):
-        """ Method to compute the smoothness indicators of the candidate polynomials. 
-        Supposedly faster than the general formula of the super class. """
+        """Method to compute the smoothness indicators of the candidate polynomials.
+        Supposedly faster than the general formula of the super class."""
 
         indicators = np.zeros([self.diffs.shape[0] - self.G, len(self.polynomials)])
         indicators[:, 0] = (
@@ -365,8 +365,8 @@ class CWENO5_1D(Uniform_CWENO_1D):
         return indicators
 
     def outer_boundary(self, side, p_opt):
-        """ Method to compute the coefficients of the reconstruction polynomial defined within 
-        the outer boundary cells, namely I_{0.5} and I_{N-0.5}. """
+        """Method to compute the coefficients of the reconstruction polynomial defined within
+        the outer boundary cells, namely I_{0.5} and I_{N-0.5}."""
 
         c = self.params[1]
         if side == "left":
@@ -415,8 +415,8 @@ class CWENO5_1D(Uniform_CWENO_1D):
         return rec_coeffs / np.power(self.h, range(self.G + 1))
 
     def inner_boundary(self, side, p_opt):
-        """ Method to compute the coefficients of the reconstruction polynomial defined within 
-        the inner boundary cells, namely I_{1.5} and I_{N-1.5}. """
+        """Method to compute the coefficients of the reconstruction polynomial defined within
+        the inner boundary cells, namely I_{1.5} and I_{N-1.5}."""
 
         c = self.params[0]
         if side == "left":
@@ -473,8 +473,8 @@ class CWENO5_1D(Uniform_CWENO_1D):
 
 
 class CWENO7_1D(Uniform_CWENO_1D):
-    """ Subclass implementing CWENO7 reconstruction for one dimensional underlying function 
-    including one-sided boundary treatment. """
+    """Subclass implementing CWENO7 reconstruction for one dimensional underlying function
+    including one-sided boundary treatment."""
 
     def __init__(self, avgs, h, eps, p, d0, params=None):
         """ The constructor. """
@@ -522,8 +522,8 @@ class CWENO7_1D(Uniform_CWENO_1D):
         return rec_coeffs
 
     def compute_indicators(self):
-        """ Method to compute the smoothness indicators of the candidate polynomials. 
-        Supposedly faster than the general formula of the super class. """
+        """Method to compute the smoothness indicators of the candidate polynomials.
+        Supposedly faster than the general formula of the super class."""
 
         indicators = np.zeros([self.diffs.shape[0] - self.G, len(self.polynomials)])
         indicators[:, 0] = (
@@ -555,8 +555,8 @@ class CWENO7_1D(Uniform_CWENO_1D):
         return indicators
 
     def outer_boundary(self, side, p_opt):
-        """ Method to compute the coefficients of the reconstruction polynomial defined within 
-        the outer boundary cells, namely I_{0.5} and I_{N-0.5}. """
+        """Method to compute the coefficients of the reconstruction polynomial defined within
+        the outer boundary cells, namely I_{0.5} and I_{N-0.5}."""
 
         c = self.params[2]
         if side == "left":
@@ -638,8 +638,8 @@ class CWENO7_1D(Uniform_CWENO_1D):
         return rec_coeffs / np.power(self.h, range(self.G + 1))
 
     def middle_boundary(self, side, p_opt):
-        """ Method to compute the coefficients of the reconstruction polynomial defined within 
-        the middle boundary cells, namely I_{1.5} and I_{N-1.5}. """
+        """Method to compute the coefficients of the reconstruction polynomial defined within
+        the middle boundary cells, namely I_{1.5} and I_{N-1.5}."""
 
         c = self.params[1]
         if side == "left":
@@ -743,8 +743,8 @@ class CWENO7_1D(Uniform_CWENO_1D):
         return rec_coeffs / np.power(self.h, range(self.G + 1))
 
     def inner_boundary(self, side, p_opt):
-        """ Method to compute the coefficients of the reconstruction polynomial defined within 
-        the inner boundary cells, namely I_{2.5} and I_{N-2.5}. """
+        """Method to compute the coefficients of the reconstruction polynomial defined within
+        the inner boundary cells, namely I_{2.5} and I_{N-2.5}."""
 
         c = self.params[0]
         if side == "left":

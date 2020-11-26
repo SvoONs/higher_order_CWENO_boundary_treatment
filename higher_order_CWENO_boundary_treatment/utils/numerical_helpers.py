@@ -66,8 +66,8 @@ def simpson_rule(func, x0, x2):
 
 
 def gaussian_quadrature(func, n, a, b):
-    """ Integrates a function using the Gaussian quadratures of n nodes 
-    with accuracy O((b-a)^2*n). """
+    """Integrates a function using the Gaussian quadratures of n nodes
+    with accuracy O((b-a)^2*n)."""
 
     x, w = p_roots(n + 1)
     G = 0.5 * (b - a) * sum(w * func(0.5 * (b - a) * x + 0.5 * (b + a)))
