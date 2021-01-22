@@ -15,3 +15,25 @@ Such reconstruction algorithms can for example be used to construct high-order F
 To assist with such applications, the repository implements explicit
 Runge-Kutta time integrators of order 3, 5, and 7 as well as methods
 to semi-discretize in spatial dimensions.
+
+## Contributing
+
+Contributions are always welcome. You can either pick an [existing issue](https://github.com/SvoONs/higher_order_CWENO_boundary_treatment/issues) or create a new one.
+
+In order to work on an issue just fork the repository and open a pull request once ready. Generally that means:
+* all tests pass and
+* if new functionality is added, corresponding tests are part of the pull request.
+
+### Development setup & running tests
+In order to run tests locally you can run
+```bash
+pip install -r requirements.txt -r test-requirements.txt
+pip install -e .
+```
+from the source directory to first install all requirements and setup the repository in editable mode. If you prefer conda over pip use the equivalent commands to achieve the same.
+
+If everything worked fine, you can run tests using [pytest](https://docs.pytest.org/en/stable/):
+
+```bash
+pytest tests/
+```
