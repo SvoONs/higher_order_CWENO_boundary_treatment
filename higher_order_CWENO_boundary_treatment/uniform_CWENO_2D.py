@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+
 from higher_order_CWENO_boundary_treatment.uniform_CWENO_1D import (
-    Uniform_CWENO_1D,
     CWENO3_1D,
     CWENO5_1D,
     CWENO7_1D,
+    Uniform_CWENO_1D,
 )
 
 

@@ -37,3 +37,13 @@ If everything worked fine, you can run tests using [pytest](https://docs.pytest.
 ```bash
 pytest tests/
 ```
+
+### Code formatting
+I use [black](https://github.com/psf/black) for code formatting. To automatically run black whenever you commit a change install the provided pre-commit hooks by running
+```bash
+pre-commit install
+```
+Afterwards you can also manually format the code executing for example
+```bash
+pre-commit run --all-files
+```

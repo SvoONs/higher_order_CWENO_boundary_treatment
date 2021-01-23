@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from numpy import array
 import pytest
+from numpy import array
 
 from higher_order_CWENO_boundary_treatment.uniform_CWENO_1D import (
     CWENO3_1D,
