@@ -1,4 +1,3 @@
-isort
 numpy
 pre-commit
 scipy
