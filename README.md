@@ -1,4 +1,4 @@
-# higher_order_CWENO_boundary_treatment
+# higher_order_CWENO_boundary_treatment ![](https://github.com/SvoONs/higher_order_CWENO_boundary_treatment/workflows/run_tests/badge.svg)
 
 ![Two dimensional shallow water equation](shallow_water_radial.png)
 
