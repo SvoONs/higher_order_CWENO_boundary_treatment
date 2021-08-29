@@ -1,6 +1,10 @@
 name: CI
 on: [push]
 jobs:
+  greet_dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: SvoONs/greet_dev@main
   lint:
     runs-on: ubuntu-latest
     steps:
