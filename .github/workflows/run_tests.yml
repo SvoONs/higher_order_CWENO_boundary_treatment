@@ -1,0 +1,14 @@
+name: run_tests
+on: [push]
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v2
+    - name: install in editable mode
+      run: |
+        pip install -e .
+        pip install -r test-requirement.txt
+    - name: run tests
+      run: pytest tests/
