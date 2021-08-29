@@ -9,6 +9,6 @@ jobs:
     - name: install in editable mode
       run: |
         pip install -e .
-        pip install -r test-requirement.txt
+        pip install -r test-requirements.txt
     - name: run tests
       run: pytest tests/
