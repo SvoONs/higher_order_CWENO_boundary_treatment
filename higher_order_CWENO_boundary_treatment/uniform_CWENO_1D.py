@@ -9,7 +9,14 @@ from higher_order_CWENO_boundary_treatment.utils.numerical_helpers import (
 
 
 class Uniform_CWENO_1D:
-    """ Base class for CWENO reconstructions on uniform grids. """
+    """Base class for one-dimensional CWENO reconstructions on uniform grids.
+    The implementations is based on
+
+    I. Cravero, G. Puppo, M. Semplice, and G. Visconti, CWENO: uniformly
+    accurate reconstructions for balance laws, Mathematics of Computation, (2017).
+
+    To gain a better understanding of this class refer to above article.
+    """
 
     Gamma = [
         np.array(
@@ -44,8 +51,26 @@ class Uniform_CWENO_1D:
     ]
 
     def __init__(self, order, avgs, h, eps, p, d0, params=None):
-        """ The constructor. """
+        """Class constructor.
 
+        Parameters
+        ----------
+        order : int
+            Desired order of accuracy of the CWENO reconstruction.
+        avgs : numpy.ndarray
+            Array input cell averages from which to compute reconstruction polynomials.
+        h : float
+            Cell size of the uniform grid.
+        eps : float
+            Epsilon used in computation of nonlinear weights.
+        p : int
+            Power parameter used in computation of nonlinear weights.
+        d0 : float
+            Linear weight of zero polynomial P0.
+        params : list[float], optional
+            List of weights used for reconstruction polynomials at boundary cells, by default None.
+            If None, periodic boundaries are assumed and no specific boundary treatment is applied.
+        """
         self.G = order - 1  # degree of optimal polynomial
         self.g = int(order / 2)  # degree of substencil polynomials
         self.h = h  # cell size of the uniform grid
@@ -67,7 +92,12 @@ class Uniform_CWENO_1D:
             d = np.array([self.d0, (1 - self.d0) / 2, (1 - self.d0) / 2])
         elif self.G == 4:
             d = np.array(
-                [self.d0, (1 - self.d0) / 4, (1 - self.d0) / 2, (1 - self.d0) / 4]
+                [
+                    self.d0,
+                    (1 - self.d0) / 4,
+                    (1 - self.d0) / 2,
+                    (1 - self.d0) / 4,
+                ]
             )
         elif self.G == 6:
             d = np.array(
@@ -183,13 +213,15 @@ class Uniform_CWENO_1D:
                 left[-(i + 1)] = np.dot(
                     rec_coeffs[-(i + 1), :],
                     np.power(
-                        (self.G + 1 - 2 * (i + 1)) / 2 * self.h, range(self.G + 1)
+                        (self.G + 1 - 2 * (i + 1)) / 2 * self.h,
+                        range(self.G + 1),
                     ),
                 )
                 right[i] = np.dot(
                     rec_coeffs[i, :],
                     np.power(
-                        (-(self.G + 1) + 2 * (i + 1)) / 2 * self.h, range(self.G + 1)
+                        (-(self.G + 1) + 2 * (i + 1)) / 2 * self.h,
+                        range(self.G + 1),
                     ),
                 )
                 right[-(i + 1)] = np.dot(
