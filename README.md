@@ -16,6 +16,8 @@ To assist with such applications, the repository implements explicit
 Runge-Kutta time integrators of order 3, 5, and 7 as well as methods
 to semi-discretize in spatial dimensions.
 
+You can find a jupyter notebook show-casing the application to solve an initial value problem for shallow water equations in [examples](examples/shallow_water_radial.ipynb).
+
 ## Contributing
 
 Contributions are always welcome. You can either pick an [existing issue](https://github.com/SvoONs/higher_order_CWENO_boundary_treatment/issues) or create a new one.
@@ -39,7 +41,7 @@ pytest tests/
 ```
 
 ### Code formatting
-I use [black](https://github.com/psf/black) for code formatting. To automatically run black whenever you commit a change install the provided pre-commit hooks by running
+I use [ruff](https://docs.astral.sh/ruff/) for code formatting. To automatically run ruff whenever you commit a change install the provided pre-commit hooks by running
 ```bash
 pre-commit install
 ```
